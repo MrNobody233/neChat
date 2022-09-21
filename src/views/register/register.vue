@@ -3,7 +3,6 @@
     <div class="Register">
       <div class="card">
         <div class="cardHead">
-          <!--          <img src="./src/assets/logo.png" alt="">-->
           <img src="../../assets/logo.png" alt="">
           <p>NeChat - Register</p>
         </div>
@@ -16,8 +15,7 @@
             <el-input class="confirm_password_input" v-model="confirm_password" show-password
                       placeholder="Enter your password again..."></el-input>
           </form>
-          <el-button>Register</el-button>
-          <!--          <el-button @click="register">Register</el-button>-->
+          <el-button @click="register">Register</el-button>
           <el-link href="#/Login" type="info">login</el-link>
         </div>
       </div>
@@ -26,22 +24,21 @@
 </template>
 
 <script>
-import axios from "axios"
 import {Message} from 'element-ui';
+import {register} from "@/ulits/api";
+import router from "@/router";
 
 export default {
   name: 'Register',
   data() {
     return {
-      // img: require('../../../../csgo/src/assets/img/background.png'),
       username: null,
       password: null,
       confirm_password: null
     }
   },
   methods: {
-    /*register() {
-      // this.$router.replace('#/Register');
+    register() {
       if (this.username === null || this.password === null || this.confirm_password === null) {
         Message({
           message: '用户名或密码不能为空', type: 'warning', duration: 1500
@@ -73,28 +70,20 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_API + '/register', {
-        UserName: this.username,
-        Password: this.password
+      register(this.username, this.password).then((res) => {
+        if (res.code === 0) {
+          Message({
+            message: '注册成功', type: 'success', duration: 1500
+          });
+          router.push('/chat')
+        } else {
+          Message({
+            message: res.msg, type: 'error', duration: 1500
+          });
+        }
       })
-          .then(function (response) {
-            const data = response.data;
-            if (data.code === 0) {
-              Message({
-                message: data.msg, type: 'success', duration: 1500
-              });
-            } else {
-              Message({
-                message: data.msg, type: 'error', duration: 1500
-              });
-            }
-          })
-          .catch(function (error) {
-            Message({
-              message: error, type: 'error', duration: 1500
-            });
-          })
-    }*/
+
+    }
   }
 }
 </script>

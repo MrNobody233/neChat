@@ -15,6 +15,10 @@
             </i>
           </el-input>
         </div>
+
+        <!--搜索内容-->
+        <div></div>
+
         <!--好友列表-->
         <div class="friendList">
           <div class="friendItem" v-for="item in 20">
