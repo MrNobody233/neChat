@@ -14,6 +14,7 @@ import {
     Avatar,
     Header,
     Footer,
+    Image
 } from 'element-ui'
 
 Vue.prototype.$message = Message
@@ -30,3 +31,6 @@ Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(Avatar)
+Vue.use(Image)
+
+

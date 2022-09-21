@@ -12,7 +12,7 @@
             <el-input v-model="username" placeholder="Your nick name..."></el-input>
             <el-input v-model="password" show-password placeholder="Enter your password..."></el-input>
           </form>
-          <el-button>Login</el-button>
+          <el-button @click="login">Login</el-button>
           <!--          <el-button @click="login">Login</el-button>-->
           <el-link href="#/Register" type="info">Register</el-link>
         </div>
@@ -22,10 +22,11 @@
 </template>
 
 <script>
-// import axios from "axios"
-// import {Message} from 'element-ui';
+import axios from "axios"
+import {Message} from 'element-ui';
 
-import {Message} from "element-ui";
+import {login} from "@/ulits/api";
+import router from "@/router";
 
 export default {
   name: 'Login',
@@ -36,7 +37,6 @@ export default {
     }
   },
   methods: {
-
     /* login() {
        if (this.username === null || this.password === null) {
          Message({
@@ -66,6 +66,43 @@ export default {
          });
        })
      }*/
+
+    login() {
+
+      if (this.username === null || this.password === null) {
+        Message({
+          message: '用户名或密码不能为空',
+          type: 'warning',
+          duration: 1500
+        });
+        return;
+      }
+
+      login(this.username, this.password).then((res) => {
+        console.log(res)
+        if (res.code === 0) {
+          Message({
+            message: res.msg, type: 'success', duration: 1500
+          });
+          router.push('/chat')
+        } else {
+          Message({
+            message: res.msg, type: 'error', duration: 1500
+          });
+        }
+      })
+
+      /*
+            axios.post('http://192.168.4.20:25566/api' + '/login', {
+              UserName: this.username,
+              Password: this.password
+            }).then((res) => {
+              console.log(res)
+            })
+      */
+
+    }
+
   }
 }
 </script>
