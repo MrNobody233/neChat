@@ -13,7 +13,6 @@
             <el-input v-model="password" show-password placeholder="Enter your password..."></el-input>
           </form>
           <el-button @click="login">Login</el-button>
-          <!--          <el-button @click="login">Login</el-button>-->
           <el-link href="#/Register" type="info">Register</el-link>
         </div>
       </div>
@@ -22,7 +21,7 @@
 </template>
 
 <script>
-import axios from "axios"
+
 import {Message} from 'element-ui';
 
 import {login} from "@/ulits/api";
@@ -37,38 +36,7 @@ export default {
     }
   },
   methods: {
-    /* login() {
-       if (this.username === null || this.password === null) {
-         Message({
-           message: '用户名或密码不能为空',
-           type: 'warning',
-           duration: 1500
-         });
-         return;
-       }
-       axios.post(process.env.VUE_APP_API + '/login', {
-         UserName: this.username,
-         Password: this.password
-       }).then(function (response) {
-         const data = response.data;
-         if (data.code === 0) {
-           Message({
-             message: data.msg, type: 'success', duration: 1500
-           });
-         } else {
-           Message({
-             message: data.msg, type: 'error', duration: 1500
-           });
-         }
-       }).catch(function (error) {
-         Message({
-           message: error, type: 'error', duration: 1500
-         });
-       })
-     }*/
-
     login() {
-
       if (this.username === null || this.password === null) {
         Message({
           message: '用户名或密码不能为空',
@@ -77,9 +45,7 @@ export default {
         });
         return;
       }
-
       login(this.username, this.password).then((res) => {
-        console.log(res)
         if (res.code === 0) {
           Message({
             message: res.msg, type: 'success', duration: 1500
@@ -91,18 +57,7 @@ export default {
           });
         }
       })
-
-      /*
-            axios.post('http://192.168.4.20:25566/api' + '/login', {
-              UserName: this.username,
-              Password: this.password
-            }).then((res) => {
-              console.log(res)
-            })
-      */
-
     }
-
   }
 }
 </script>

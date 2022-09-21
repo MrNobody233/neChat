@@ -14,7 +14,9 @@ import {
     Avatar,
     Header,
     Footer,
-    Image
+    Image,
+    Tag,
+
 } from 'element-ui'
 
 Vue.prototype.$message = Message
@@ -32,5 +34,7 @@ Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(Avatar)
 Vue.use(Image)
+Vue.use(Tag)
+
 
 

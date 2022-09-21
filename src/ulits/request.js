@@ -3,7 +3,6 @@ import store from "@/store";
 import router from "@/router";
 
 export const baseURL = 'http://192.168.4.20:25566/api'
-// export const baseURL = 'http://api.a20safe.com/api.php'
 
 const instance = axios.create({
     // axios 的一些配置  baseURL timeout

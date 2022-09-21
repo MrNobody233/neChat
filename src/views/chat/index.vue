@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!--背景图片-->
-    <div class="bg"></div>
+    <div class="bg" @click="hideSearchBox"></div>
     <!--主体部分-->
     <div class="main">
       <!-- 左边-->
@@ -10,25 +10,52 @@
         <my-avatar></my-avatar>
         <!--搜索框-->
         <div class="search">
-          <el-input placeholder="搜索" v-model="searchInput">
+          <el-input placeholder="搜索" v-model="searchInput" @focus="showSearchBox">
             <i slot="prefix" class="el-input__icon el-icon-search">
+            </i>
+            <i slot="suffix" class="el-input__icon el-icon-close" @click="hideSearchBox">
             </i>
           </el-input>
         </div>
-        <!--好友列表-->
+
+        <!--中间盒子-->
         <div class="friendList">
-          <div class="friendItem" v-for="item in 20">
-            <div class="friendBorder">
-              <img src="https://avatars.githubusercontent.com/u/96650292?v=4" alt="">
-              <span>名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字</span>
+          <!--el-fade-in el-zoom-in-center-->
+          <transition :name="changeTransition">
+            <!--好友列表-->
+            <friend-list v-show="isShow"></friend-list>
+
+          </transition>
+          <!--          <div class="friendItem" v-for="item in 20">
+                      <div class="friendBorder">
+                        <img src="https://avatars.githubusercontent.com/u/96650292?v=4" alt="">
+                        <span>名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字名字</span>
+                      </div>
+                    </div>-->
+
+          <!--搜索-->
+
+          <div class="searchContainer" v-show="!isShow">
+            <div class="searchContainerTop">
+              <div>
+                <i slot="suffix" class="el-input__icon el-icon-time"></i>
+                <span> 最近搜索</span>
+              </div>
+              <i slot="suffix" class="el-input__icon el-icon-delete"></i>
+            </div>
+            <div class="historyContainer">
+              <van-tag>五五五</van-tag>
             </div>
           </div>
+
         </div>
+
         <!--设置-->
         <div class="setting">
           <i class="el-icon-setting"></i>
           设置
         </div>
+
       </div>
       <!--右侧聊天区域-->
       <div class="talkBox">
@@ -36,10 +63,12 @@
         <div class="talkBoxTop">
           <span>木子曰天</span>
         </div>
+
         <!--中间聊天区域-->
         <div class="talkBoxMain">
 
         </div>
+
         <!--底部文本域-->
         <div class="talkBoxBottom">
           <textarea placeholder="说点什么吧~"></textarea>
@@ -52,13 +81,39 @@
 
 <script>
 import myAvatar from "@/views/chat/components/myAvatar";
+import friendList from "@/views/chat/components/friendList";
 
 export default {
   name: "index",
-  components: {myAvatar},
+  components: {myAvatar, friendList},
   data() {
     return {
-      searchInput: ''
+      // 搜索表单数据
+      searchInput: '',
+      // 切换显示搜素区域和好友列表区域
+      isShow: true,
+      // 动画数组
+      transition: ['el-fade-in', 'el-zoom-in-center', 'el-zoom-in-top', 'el-zoom-in-bottom'],
+      // 切换动画的flag
+      flag: 0,
+    }
+  },
+  methods: {
+    // 展示搜索盒子 并 更改随机切换动画flag
+    showSearchBox() {
+      this.isShow = false
+      this.flag = Math.floor(Math.random() * 3);
+      console.log(this.flag)
+    },
+
+    hideSearchBox() {
+      this.isShow = true
+    }
+  },
+  computed: {
+    // 计算属性返回随机动画数组
+    changeTransition() {
+      return this.transition[this.flag]
     }
   }
 }
@@ -73,7 +128,6 @@ export default {
   width: 100%;
   background: url(../../../src/assets/img/background_chat.jpg) no-repeat fixed center center;
   background-size: cover;
-
 }
 
 .main {
@@ -99,44 +153,83 @@ export default {
       flex: 1;
       overflow: auto;
 
-      .friendItem {
+      /*   .friendItem {
+           width: 100%;
+           height: 55px;
+           background-color: white;
+           margin-bottom: 3px;
+           cursor: pointer;
+
+           .friendBorder {
+             width: 80%;
+             height: 100%;
+             margin: 0 auto;
+             //background-color: rebeccapurple;
+             border-bottom: #ccc 1px solid;
+             display: flex;
+
+             align-items: center;
+
+             span {
+
+               white-space: nowrap;
+               text-overflow: ellipsis;
+               overflow: hidden;
+               margin-left: 30px;
+             }
+
+             img {
+               border-radius: 30px;
+               width: 40px;
+               height: 40px;
+             }
+           }
+
+
+         }*/
+
+      .searchContainer {
         width: 100%;
-        height: 55px;
-        background-color: white;
-        margin-bottom: 3px;
-        cursor: pointer;
-
-        .friendBorder {
-          width: 80%;
-          height: 100%;
-          margin: 0 auto;
-          //background-color: rebeccapurple;
-          border-bottom: #ccc 1px solid;
+        height: 100%;
+        .searchContainerTop {
           display: flex;
-
           align-items: center;
+          justify-content: space-between;
+          padding: 0 5px;
 
-          span {
 
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            margin-left: 30px;
+          .el-icon-time {
+            color: #ccc;
           }
 
-          img {
-            border-radius: 30px;
-            width: 40px;
-            height: 40px;
+          .el-icon-delete {
+            color: #ccc;
+          }
+
+          .el-icon-delete:hover {
+            transition: 0.5s ease;
+            color: black;
+            cursor: pointer;
+          }
+
+          span {
+            font-size: 10px;
+            color: #ccc;
           }
         }
 
+        .historyContainer {
 
+        }
       }
 
-      .friendItem:hover {
-        transition: ease .5s;
-        background-color: #ecf5ff;
+    }
+
+    .search {
+      .el-icon-close:hover {
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
       }
     }
 
