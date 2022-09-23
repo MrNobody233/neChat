@@ -66,7 +66,6 @@
 
         <!--中间聊天区域-->
         <div class="talkBoxMain">
-
         </div>
 
         <!--底部文本域-->
