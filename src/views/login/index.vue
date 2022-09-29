@@ -3,7 +3,8 @@
     <div class="Login">
       <div class="card">
         <div class="cardHead">
-          <img src="../../../../csgo/src/assets/logo.png" alt="">
+          <img src="../../assets/img/logo.png" alt="">
+
           <p>NeChat - Login</p>
         </div>
 

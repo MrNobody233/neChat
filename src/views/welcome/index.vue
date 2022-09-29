@@ -33,7 +33,7 @@ export default {
   left: 0;
   height: 100%;
   width: 100%;
-  background: url(../../../../csgo/src/assets/img/background_welcome.jpg) no-repeat fixed center center;
+  background: url(../../assets/img/background_welcome.jpg) no-repeat fixed center center;
   background-size: cover;
 }
 
