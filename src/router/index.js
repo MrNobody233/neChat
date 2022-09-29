@@ -6,6 +6,8 @@ const Login = () => import(/*webpackChunkName:"Login"*/'@/views/login')
 const register = () => import(/*webpackChunkName:"Register"*/'@/views/register/register')
 const chat = () => import(/*webpackChunkName:"Chat"*/'@/views/chat/index')
 const test = () => import(/*webpackChunkName:"test"*/'@/views/test/test')
+const talkBox = () => import(/*webpackChunkName:"msg"*/'@/views/chat/talkBox')
+const defaultBg = () => import(/*webpackChunkName:"default"*/'@/views/chat/talkBox/components/default.vue')
 
 Vue.use(VueRouter)
 
@@ -21,7 +23,12 @@ const routes = [
         path: '/register', component: register
     },
     {
-        path: '/chat', component: chat
+        path: '/chat', component: chat,
+
+        children: [
+            {path: '/', component: defaultBg},
+            {path: 'msg/:id', component: talkBox}
+        ]
     },
     {
         path: '/test', component: test

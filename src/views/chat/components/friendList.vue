@@ -1,36 +1,40 @@
 <template>
-
   <div class="container">
-
-      <div class="friendItem" v-for="item in 1">
-        <div class="friendBorder">
-          <img :src="avatar" alt="">
-          <span>{{ name }}</span>
-
-        </div>
+    <router-link :to="`/chat/msg/${i.id}`" class="friendItem" v-for="i in list" :key="i.id">
+      <div class="friendBorder">
+        <img :src="i.avatar" alt="">
+        <span>{{ i.username }}</span>
       </div>
-
-
+    </router-link>
   </div>
 </template>
 
 <script>
-
 import 'vant/lib/button/style';
 
 export default {
   name: "friendList",
   props: {
-    name: {
-      type: String,
-      default: '木子日天'
-    },
-    avatar: {
-      type: String,
-      default: 'https://avatars.githubusercontent.com/u/96650292?v=4'
+    list: {
+      type: [Object, Array],
+      default: () => ({})
     }
-
   }
+  /*  props: {
+      name: {
+        type: String,
+        default: '木子日天'
+      },
+      avatar: {
+        type: String,
+        default: 'https://avatars.githubusercontent.com/u/96650292?v=4'
+      },
+      id: {
+        type: Number,
+        default: 1
+      }
+    }*/
+
 }
 </script>
 
@@ -41,6 +45,9 @@ export default {
   background-color: white;
   margin-bottom: 3px;
   cursor: pointer;
+  display: block;
+  font-style: normal;
+  color: black;
 
   .friendBorder {
     width: 80%;

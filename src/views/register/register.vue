@@ -54,6 +54,7 @@ export default {
       }
 
       const u_pattern = /^[a-zA-Z0-9_-]{4,16}$/;
+
       const p_pattern = /^.*(?=.{6,})(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*?.]).*$/;
 
       if (!u_pattern.test(this.username)) {

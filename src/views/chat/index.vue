@@ -23,7 +23,7 @@
           <!--el-fade-in el-zoom-in-center-->
           <transition :name="changeTransition">
             <!--好友列表-->
-            <friend-list v-show="isShow"></friend-list>
+            <friend-list v-show="isShow" :list="list"></friend-list>
 
           </transition>
           <!--          <div class="friendItem" v-for="item in 20">
@@ -43,8 +43,10 @@
               </div>
               <i slot="suffix" class="el-input__icon el-icon-delete"></i>
             </div>
+            <!--历史搜索tag-->
             <div class="historyContainer">
-              <van-tag>五五五</van-tag>
+              <!--              <history-tag v-for="i in 10"></history-tag>-->
+              <!--              <el-tag type="info">123</el-tag>-->
             </div>
           </div>
 
@@ -60,13 +62,11 @@
       <!--右侧聊天区域-->
       <div class="talkBox">
         <!--头部联系人姓名-->
-        <div class="talkBoxTop">
-          <span>木子曰天</span>
-        </div>
 
 
         <!--中间聊天区域-->
         <div class="talkBoxMain">
+          <RouterView></RouterView>
         </div>
 
         <!--底部文本域-->
@@ -82,10 +82,11 @@
 <script>
 import myAvatar from "@/views/chat/components/myAvatar";
 import friendList from "@/views/chat/components/friendList";
+import historyTag from "@/views/chat/components/historyTag";
 
 export default {
   name: "index",
-  components: {myAvatar, friendList},
+  components: {myAvatar, friendList, historyTag},
   data() {
     return {
       // 搜索表单数据
@@ -96,6 +97,12 @@ export default {
       transition: ['el-fade-in', 'el-zoom-in-center', 'el-zoom-in-top', 'el-zoom-in-bottom'],
       // 切换动画的flag
       flag: 0,
+      //  用户列表假数据
+      list: [
+        {id: 1, username: '木子日天木子日天', avatar: 'https://avatars.githubusercontent.com/u/96650292?v=4',},
+        {id: 2, username: '洋洋洋洋洋洋洋洋', avatar: 'https://avatars.githubusercontent.com/u/28512134?v=4'},
+        {id: 3, username: '充电器', avatar: 'https://avatars.githubusercontent.com/u/39784843?v=4'},
+      ]
     }
   },
   methods: {
@@ -103,11 +110,12 @@ export default {
     showSearchBox() {
       this.isShow = false
       this.flag = Math.floor(Math.random() * 3);
-      console.log(this.flag)
+
     },
 
     hideSearchBox() {
       this.isShow = true
+      this.searchInput = ''
     }
   },
   computed: {
@@ -148,6 +156,7 @@ export default {
     border-right: 2px solid #ccc;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     .friendList {
       flex: 1;
@@ -191,6 +200,7 @@ export default {
       .searchContainer {
         width: 100%;
         height: 100%;
+
         .searchContainerTop {
           display: flex;
           align-items: center;
@@ -266,7 +276,7 @@ export default {
 
     .talkBoxMain {
       flex: 1;
-
+      overflow: auto;
     }
 
     .talkBoxBottom {
