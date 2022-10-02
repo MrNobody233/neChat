@@ -3,7 +3,7 @@
     <div class="Login">
       <div class="card">
         <div class="cardHead">
-          <img src="../../assets/img/logo.png" alt="">
+          <img src="../../assets/logo.png" alt="">
 
           <p>NeChat - Login</p>
         </div>
@@ -48,6 +48,7 @@ export default {
       }
       login(this.username, this.password).then((res) => {
         if (res.code === 0) {
+
           Message({
             message: res.msg, type: 'success', duration: 1500
           });
@@ -71,7 +72,7 @@ export default {
   left: 0;
   height: 100%;
   width: 100%;
-  background: url(../../../../csgo/src/assets/img/background.png) no-repeat fixed center center;
+  background: url(../../assets/img/background.png) no-repeat fixed center center;
   background-size: cover;
 }
 

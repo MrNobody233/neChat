@@ -16,6 +16,7 @@ import {
     Footer,
     Image,
     Tag,
+    Dialog
 
 } from 'element-ui'
 
@@ -35,6 +36,7 @@ Vue.use(MenuItemGroup)
 Vue.use(Avatar)
 Vue.use(Image)
 Vue.use(Tag)
+Vue.use(Dialog)
 
 
 

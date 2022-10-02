@@ -26,7 +26,7 @@
 <script>
 
 export default {
-  name: "test",
+  name: "my-dialog",
   data() {
     return {
       modal: false
