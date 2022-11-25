@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const welcome = () => import(/*webpackChunkName:"welcome"*/'@/views/welcome')
-const Login = () => import(/*webpackChunkName:"Login"*/'@/views/login')
+const Login = () => import(/*webpackChunkName:"Login"*/'@/views/login/login')
 const register = () => import(/*webpackChunkName:"Register"*/'@/views/register/register')
 const chat = () => import(/*webpackChunkName:"Chat"*/'@/views/chat/index')
 const test = () => import(/*webpackChunkName:"test"*/'@/views/test/test')

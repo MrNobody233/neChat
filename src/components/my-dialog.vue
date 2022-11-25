@@ -1,20 +1,24 @@
 <template>
   <div class="container">
-
-    <el-button @click="modal=true">对话框</el-button>
     <transition name="el-fade-in-linear">
       <div class="modal" v-show="modal">
         <transition name="el-zoom-in-center">
           <div class="modal-dialog">
-            <div class="modal-header">
-              <p>记住你的捏捏号 :D</p>
-              <a href="#" class="btn-close">×</a>
-            </div>
             <div class="modal-body">
-              <p>你的捏捏号是：13 :D</p>
+              <p>你的捏捏号是：{{ userInfo.uid }}</p>
+              <a href="#" class="btn" @click="showSmallDialog">记住了！</a>
             </div>
-            <div class="modal-footer">
-              <a href="#" class="btn" @click="modal=false">真的记住了！</a>
+          </div>
+        </transition>
+      </div>
+    </transition>
+
+    <transition name="el-fade-in-linear">
+      <div class="modal" v-show="isShowSmallDialog">
+        <transition name="el-zoom-in-center">
+          <div class="modal-dialog">
+            <div class="smallModal-body">
+              <p>一定要记住你的捏捏号：{{ userInfo.uid }} </p>   <a href="#" class="btn" @click="gotoChat">真的记住了！</a>
             </div>
           </div>
         </transition>
@@ -25,14 +29,39 @@
 
 <script>
 
+import router from "@/router";
+import store from "@/store";
+
 export default {
   name: "my-dialog",
-  data() {
-    return {
-      modal: false
+  props: {
+    modal: {
+      type: Boolean,
+      default: false
+    },
+    userInfo: {
+      type: Object,
+      default: () => ({}),
     }
   },
-  methods: {},
+  data() {
+    return {
+      // 小的弹出框
+      isShowSmallDialog: false
+    }
+  },
+  methods: {
+    showSmallDialog() {
+
+      this.isShowSmallDialog = true
+    },
+    gotoChat() {
+      this.isShowSmallDialog = false
+      console.log(store.state.user.userInfo)
+      console.log(store.state.user.userInfo.token)
+      router.push('/chat')
+    }
+  },
   computed: {}
 }
 </script>
@@ -44,11 +73,11 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 99;
 }
 
 .modal:before {
   content: '';
-  display: none;
   background: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
@@ -73,6 +102,7 @@ export default {
   width: 360px;
   display: flex;
   flex-direction: column;
+  height: 55px;
 
   .modal-header {
     height: 60px;
@@ -80,18 +110,19 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #f1f1f1;
+    //border-bottom: 1px solid #f1f1f1;
 
     p {
       margin-left: 15px;
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 600;
     }
 
     .btn-close {
       color: #ccc;
       font-size: 30px;
-      margin-right: 10px;
+      margin-right: 5px;
+      margin-bottom: 29px;
     }
 
     .btn-close:hover {
@@ -101,12 +132,10 @@ export default {
   }
 
   .modal-body {
-    align-items: center;
     display: flex;
-    border: 1px solid #CCCCCC;
-    border-left: none;
-    border-right: none;
-    height: 120px;
+    align-items: center;
+    height: 60px;
+    justify-content: space-around;
 
     p {
       margin-left: 15px;
@@ -114,26 +143,23 @@ export default {
       font-weight: 550;
       font-size: 15px;
     }
+
+    .btn {
+      display: block;
+      width: 80px;
+      height: 30px;
+      background-color: #374b4f;
+      color: #fff;
+      border-radius: 7px;
+      text-align: center;
+      line-height: 30px;
+      font-size: 14px;
+    }
   }
 
   .modal-footer {
     height: 60px;
     position: relative;
-
-    .btn {
-      display: block;
-      width: 100px;
-      height: 40px;
-      background-color: #374b4f;
-      color: #fff;
-      border-radius: 7px;
-      text-align: center;
-      line-height: 40px;
-      font-size: 14px;
-      position: absolute;
-      right: 10px;
-      top: 10px;
-    }
 
     .btn:hover {
       transition: .4s all ease;
@@ -141,6 +167,42 @@ export default {
     }
   }
 
+}
+
+.smallDialog {
+  width: 300px;
+  height: 300px;
+  background-color: pink;
+}
+
+.smallModal-body {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  p {
+    margin-left: 15px;
+    color: #494949;
+    font-weight: 550;
+    font-size: 15px;
+  }
+
+  .btn {
+    display: block;
+    padding: 0px 10px;
+    height: 30px;
+    background-color: #374b4f;
+    color: #fff;
+    border-radius: 7px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+  }
+
+  .btn:hover {
+    transition: .4s all ease;
+    background-color: #465f65;
+  }
 }
 
 </style>

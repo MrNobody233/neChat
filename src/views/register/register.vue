@@ -19,47 +19,9 @@
         </div>
       </div>
     </div>
-    <myDialog></myDialog>
 
-    <!--    <el-button type="text" @click="outerVisible = true">点击打开外层 Dialog</el-button>
+    <myDialog :modal="modal" v-if="modal" :userInfo="userInfo"></myDialog>
 
-        <el-dialog center title="要记住你的nn号哦！！" :visible.sync="outerVisible">
-          你的捏捏号是：{{ nnNumber }}
-          <el-dialog
-              width="30%"
-              title="真的记住了吗？"
-              :visible.sync="innerVisible"
-              append-to-body
-              center>
-            <span style="text-align: center">捏捏号是：{{ nnNumber }} 哦！！！！ </span>
-            <br>
-            <el-button style="margin: 10px auto" type="primary" @click="closeSmallDialog">真得记住了！</el-button>
-          </el-dialog>
-          <div slot="footer" class="dialog-footer">
-            &lt;!&ndash;        <el-button type="primary" @click="innerVisible = true">记住了！</el-button>&ndash;&gt;
-            <el-button type="primary" @click="closeBigDialog">记住了！</el-button>
-          </div>
-        </el-dialog>-->
-
-    <!-- Modal -->
-    <!--    <a href="#modal-one" class="btn btn-big">Modal!</a>
-        <a href="#" class="" @click="modal=true">弹出框</a>
-
-        <div class="modal" id="modal-one" aria-hidden="true" >
-          <div class="modal-dialog" >
-            <div class="modal-header">
-              <h2>真的记住了你的捏捏号吗？</h2>
-              <a href="#" class="btn-close" aria-hidden="true">×</a>
-            </div>
-            <div class="modal-body">
-              <p>你的捏捏号是：13 :D</p>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn">真的记住了！</a>
-            </div>
-          </div>
-        </div>
-      -->
   </div>
 </template>
 
@@ -68,6 +30,7 @@ import {Message} from 'element-ui';
 import myDialog from "@/components/my-dialog";
 import {register} from "@/ulits/api";
 import router from "@/router";
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'Register',
@@ -77,14 +40,17 @@ export default {
       username: null,
       password: null,
       confirm_password: null,
-      nnNumber: '123',
-      outerVisible: false,
-      innerVisible: false,
+      // 捏捏号
+      nnNumber: '',
       // 是否弹出对话框
       modal: false,
+      // 用户信息
+      userInfo: {}
     }
   },
   methods: {
+    ...mapMutations('user', ['setUser']),
+
     register() {
       if (this.username === null || this.password === null || this.confirm_password === null) {
         Message({
@@ -92,64 +58,55 @@ export default {
         });
         return;
       }
-
       if (this.password !== this.confirm_password) {
         Message({
           message: '两次输入密码不一致', type: 'warning', duration: 1500
         });
         return;
       }
-
       const u_pattern = /^[a-zA-Z0-9_-]{4,16}$/;
-
       const p_pattern = /^.*(?=.{6,})(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*?.]).*$/;
-
       if (!u_pattern.test(this.username)) {
         Message({
           message: '用户名必须符合4到16位（字母，数字，特殊字符）', type: 'warning', duration: 1500
         });
         return;
       }
-
       if (!p_pattern.test(this.password)) {
         Message({
           message: '密码最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符', type: 'warning', duration: 1500
         });
         return;
       }
-
+      // 如果登录成功
       register(this.username, this.password).then((res) => {
         if (res.code === 0) {
-          this.outerVisible = true
+          // this.outerVisible = true
           Message({
             message: '注册成功辣', type: 'success', duration: 1500
           });
-
+          // 给用户信息赋值
+          this.userInfo = res
           this.nnNumber = res.uid
-
+          this.modal = true
+          this.setUser(this.userInfo)
         } else {
           Message({
             message: res.msg, type: 'error', duration: 1500
           });
         }
       })
-
     },
-    // 关闭大的对话框
-    closeBigDialog() {
-      this.innerVisible = true
-    },
-    // 关闭小的对话框
-    closeSmallDialog() {
-      this.outerVisible = false
-      this.innerVisible = false
-      router.push('/chat')
-    }
   }
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+
+.Register {
+  z-index: 999;
+}
+
 .bg {
   position: absolute;
   top: 0;
@@ -215,6 +172,7 @@ export default {
   border-color: #374b4f;
   color: #ffffff;
 }
+
 
 .registerBtn:hover {
   background: #465f65;

@@ -2,7 +2,9 @@ import axios from 'axios'
 import store from "@/store";
 import router from "@/router";
 
-export const baseURL = 'http://192.168.4.20:25566/api'
+// export const baseURL = 'http://192.168.255.48:25566/api'
+export const baseURL = 'http://127.0.0.1:25566/api'
+
 
 const instance = axios.create({
     // axios 的一些配置  baseURL timeout
@@ -13,13 +15,14 @@ const instance = axios.create({
 // 拦截器
 instance.interceptors.request.use(config => {
     // 获取 token
-    // const {profile} = store.state.user
+    const {token} = store.state.user.userInfo
     // 判断是否有 token
-    // console.log(profile.token)
-    // if (profile.token) {
-    //     // 如果有token 设置token
-    //     config.headers.Authorization = `Bearer ${profile.token}`
-    // }
+    console.log(token)
+    if (token) {
+        // 如果有token 设置token
+        // config.headers.Authorization = token
+        config.headers['x-Token'] = token
+    }
     return config
 }, (error) => {
     return Promise.reject(error)

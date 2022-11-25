@@ -20,10 +20,14 @@
         </transition>
       </div>
     </transition>
+
+    <el-button type="info" @click="addFriend">测试添加好友</el-button>
   </div>
 </template>
 
 <script>
+//
+import {addFriend} from '@/ulits/api/index'
 
 export default {
   name: "test",
@@ -32,7 +36,16 @@ export default {
       modal: false
     }
   },
-  methods: {},
+  methods: {
+    // 添加好友
+    async addFriend() {
+      await addFriend(11).then((res) => {
+        // let result = JSON.parse(res)
+        console.log(res)
+      })
+
+    }
+  },
   computed: {}
 }
 </script>

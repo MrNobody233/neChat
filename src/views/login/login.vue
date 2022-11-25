@@ -10,8 +10,9 @@
 
         <div class="cardBody">
           <form>
-            <el-input v-model="username" placeholder="Your nick name..."></el-input>
-            <el-input v-model="password" show-password placeholder="Enter your password..."></el-input>
+            <el-input v-model="username" prefix-icon="el-icon-user-solid" placeholder="Your nick name..."></el-input>
+            <el-input v-model="password" prefix-icon="el-icon-lock" show-password
+                      placeholder="Enter your password..."></el-input>
           </form>
           <el-button @click="login">Login</el-button>
           <el-link href="#/Register" type="info">Register</el-link>
@@ -24,19 +25,28 @@
 <script>
 
 import {Message} from 'element-ui';
-
 import {login} from "@/ulits/api";
 import router from "@/router";
+import {mapMutations, mapState} from 'vuex'
+import store from "@/store";
 
 export default {
   name: 'Login',
   data() {
     return {
-      username: null,
-      password: null
+      username: '1',
+      password: '123456.asd',
+      //  用户信息
+      userInfo: ''
     }
   },
+  components: {
+    ...mapState('user', ['userInfo'])
+  },
   methods: {
+    // 导入vuex中修改用户信息的方法
+    ...mapMutations('user', ['setUser']),
+    // 登录
     login() {
       if (this.username === null || this.password === null) {
         Message({
@@ -47,15 +57,22 @@ export default {
         return;
       }
       login(this.username, this.password).then((res) => {
+        console.log(res)
         if (res.code === 0) {
-
           Message({
             message: res.msg, type: 'success', duration: 1500
           });
+          // 给用户属性赋值
+          this.userInfo = res
+          console.log(this.userInfo)
+          // 将用户属性存储到vuex中
+          this.setUser(this.userInfo)
+          // 跳转到聊天页面
           router.push('/chat')
+          // console.log(store.state.user.userInfo.token)
         } else {
           Message({
-            message: res.msg, type: 'error', duration: 1500
+            message: '登录失败~请检查用户名或密码', type: 'error', duration: 1500
           });
         }
       })
